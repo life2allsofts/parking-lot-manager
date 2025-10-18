@@ -60,3 +60,32 @@
 - ✅ Parking lot creation: WORKS with valid inputs
 - ⚠️ Vehicle parking: TO BE TESTED
 - ⚠️ EV functionality: LIKELY BROKEN due to inheritance
+
+### 5. Poor User Feedback System
+
+**Evidence:** 
+- Both regular and EV vehicles show identical "Allocated slot number: 1" messages
+- Confirmation messages break table formatting and appear inline with data cells
+- Console outputs accumulate without clearing, creating visual clutter
+- Multiple "Vehicles" headers repeat in status displays
+
+**Problems:**
+- Identical slot numbering for different slot types (regular vs EV) causes confusion
+- Success messages disrupt table layout and are difficult to read
+- No separation between operational messages and data presentation
+- Historical outputs stack up, obscuring current system state
+- Missing clear empty state indicators
+
+**Impact:** 
+- Users may miss critical confirmation messages due to poor visual placement
+- Difficult to distinguish current parking lot status from historical data
+- Poor information architecture leads to user confusion and potential errors
+- Unprofessional user experience that undermines user confidence
+
+**What Good Design Would Do:**
+- Separate confirmation messages from data tables using dedicated message areas
+- Provide clear visual distinction between different types of information
+- Implement consistent message placement following established UX patterns
+- Clear console between major operations to maintain focus on current state
+- Design clean empty states with clear "No vehicles parked" messaging
+- Use distinct slot numbering systems (REG-1 vs EV-1) to avoid ambiguity
