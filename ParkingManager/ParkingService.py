@@ -1,44 +1,72 @@
+"""
+Parking Service Layer - Business Logic
+Handles all core parking operations separated from GUI concerns
+"""
+
 class VehicleFactory:
     """Factory for creating vehicle objects used by ParkingService."""
     
     def create_vehicle(self, vehicle_type, regnum, make, model, color, is_electric=False):
         """
         Create a vehicle object based on type
-        TODO: Integrate with actual Vehicle and ElectricVehicle classes later
+        TODO: Integrate with actual Vehicle and ElectricVehicle classes in Phase 4
+        Currently returns dict - will be replaced with proper class instances later
         """
-        # For now, return a dict - we'll integrate with actual classes in Phase 4
         return {
-            "type": vehicle_type,
-            "regnum": regnum,
-            "make": make,
-            "model": model,
-            "color": color,
-            "is_electric": is_electric,
-            "charge": 0 if is_electric else None
+            "type": vehicle_type,      # Type of vehicle (car, motorcycle, electric_car, etc.)
+            "regnum": regnum,          # Registration number
+            "make": make,              # Vehicle manufacturer
+            "model": model,            # Vehicle model
+            "color": color,            # Vehicle color
+            "is_electric": is_electric, # Whether vehicle is electric
+            "charge": 0 if is_electric else None  # Charge level for EVs
         }
 
 class ParkingService:
+    """
+    Core business logic for parking operations
+    Handles parking lot creation, vehicle parking/removal, and status queries
+    """
+    
     def __init__(self):
-        self.levels = {}  # {level: {'regular_spaces': int, 'ev_spaces': int, 'regular_slots': list, 'ev_slots': list}}
+        # Dictionary to store multiple parking levels
+        # Format: {level: {'regular_spaces': int, 'ev_spaces': int, 'regular_slots': list, 'ev_slots': list}}
+        self.levels = {}
         self.vehicle_factory = VehicleFactory()
     
     def create_parking_lot(self, level, regular_spaces, ev_spaces):
-        """Create a parking lot at the specified level with given capacities."""
+        """
+        Create a parking lot at the specified level with given capacities
+        
+        Args:
+            level (int): Floor level for the parking lot
+            regular_spaces (int): Number of regular parking spaces
+            ev_spaces (int): Number of electric vehicle parking spaces
+            
+        Returns:
+            bool: True if successful, False otherwise
+        """
         self.levels[level] = {
             'regular_spaces': regular_spaces,
             'ev_spaces': ev_spaces,
-            'regular_slots': [None] * regular_spaces,  # None = empty
-            'ev_slots': [None] * ev_spaces
+            'regular_slots': [None] * regular_spaces,  # None represents empty slot
+            'ev_slots': [None] * ev_spaces             # None represents empty slot
         }
         return True
 
     def park_vehicle(self, level, vehicle_data):
         """
-        Park a vehicle in the appropriate slot - EXTRACTED FROM ParkingManager.park()
-        Returns dict with {'success': bool, 'slot_id': int, 'message': str}
+        Park a vehicle in the appropriate slot based on type (EV/regular, car/motorcycle)
+        
+        Args:
+            level (int): Parking lot level
+            vehicle_data (dict): Vehicle information including type flags
+            
+        Returns:
+            dict: {'success': bool, 'slot_id': int, 'message': str}
         """
         try:
-            # Check if level exists
+            # Check if the requested level exists
             if level not in self.levels:
                 return {'success': False, 'message': f'Parking lot level {level} does not exist'}
             
@@ -46,7 +74,7 @@ class ParkingService:
             regular_slots = lot_data['regular_slots']
             ev_slots = lot_data['ev_slots']
             
-            # Extract vehicle data
+            # Extract vehicle data from input
             regnum = vehicle_data['regnum']
             make = vehicle_data['make']
             model = vehicle_data['model']
@@ -64,13 +92,14 @@ class ParkingService:
                 slots = regular_slots
                 capacity = lot_data['regular_spaces']
             
-            # Find empty slot
+            # Find first available empty slot
             slot_id = -1
             for i in range(len(slots)):
                 if slots[i] is None:
                     slot_id = i
                     break
             
+            # If no empty slots found, parking lot is full
             if slot_id == -1:
                 return {'success': False, 'message': 'Sorry, parking lot is full'}
             
@@ -86,8 +115,15 @@ class ParkingService:
 
     def remove_vehicle(self, level, slot_id, is_ev_slot=False):
         """
-        Remove vehicle from specified slot - EXTRACTED FROM ParkingManager.leave()
-        Returns dict with {'success': bool, 'message': str}
+        Remove vehicle from specified slot
+        
+        Args:
+            level (int): Parking lot level
+            slot_id (int): Slot number to remove vehicle from (1-based)
+            is_ev_slot (bool): Whether the slot is for electric vehicles
+            
+        Returns:
+            dict: {'success': bool, 'message': str}
         """
         try:
             if level not in self.levels:
@@ -95,9 +131,10 @@ class ParkingService:
             
             lot_data = self.levels[level]
             
-            # Convert to 0-based index
+            # Convert to 0-based index for internal array access
             slot_index = slot_id - 1
             
+            # Determine which slot array to use (EV or regular)
             if is_ev_slot:
                 slots = lot_data['ev_slots']
                 slot_type = "EV"
@@ -105,14 +142,15 @@ class ParkingService:
                 slots = lot_data['regular_slots']
                 slot_type = "regular"
             
-            # Check if slot exists and is occupied
+            # Validate slot number range
             if slot_index < 0 or slot_index >= len(slots):
                 return {'success': False, 'message': f'Invalid {slot_type} slot number: {slot_id}'}
             
+            # Check if slot is already empty
             if slots[slot_index] is None:
                 return {'success': False, 'message': f'{slot_type} slot {slot_id} is already empty'}
             
-            # Remove the vehicle
+            # Remove the vehicle by setting slot to None
             slots[slot_index] = None
             
             return {'success': True, 'message': f'Vehicle removed from {slot_type} slot {slot_id}'}
@@ -121,7 +159,15 @@ class ParkingService:
             return {'success': False, 'message': f'Error removing vehicle: {str(e)}'}
 
     def get_status(self, level):
-        """Get current status of parking lot at specified level - NOW IMPLEMENTED"""
+        """
+        Get current status of all parked vehicles at specified level
+        
+        Args:
+            level (int): Parking lot level
+            
+        Returns:
+            dict: {'success': bool, 'regular_vehicles': list, 'ev_vehicles': list, 'message': str}
+        """
         try:
             if level not in self.levels:
                 return {'success': False, 'message': f'Parking lot level {level} does not exist'}
@@ -134,14 +180,14 @@ class ParkingService:
             for i, vehicle in enumerate(lot_data['regular_slots']):
                 if vehicle is not None:
                     vehicle_data = vehicle.copy()
-                    vehicle_data['slot_id'] = i + 1  # 1-based slot numbering
+                    vehicle_data['slot_id'] = i + 1  # Convert to 1-based for display
                     regular_vehicles.append(vehicle_data)
             
             # Process EV slots - only include occupied slots
             for i, vehicle in enumerate(lot_data['ev_slots']):
                 if vehicle is not None:
                     vehicle_data = vehicle.copy()
-                    vehicle_data['slot_id'] = i + 1  # 1-based slot numbering
+                    vehicle_data['slot_id'] = i + 1  # Convert to 1-based for display
                     ev_vehicles.append(vehicle_data)
             
             return {
@@ -155,7 +201,15 @@ class ParkingService:
             return {'success': False, 'message': f'Error getting status: {str(e)}'}
 
     def get_charge_status(self, level):
-        """Get charge status for all electric vehicles - NOW IMPLEMENTED"""
+        """
+        Get charge status for all electric vehicles at specified level
+        
+        Args:
+            level (int): Parking lot level
+            
+        Returns:
+            dict: {'success': bool, 'charge_status': list, 'message': str}
+        """
         try:
             if level not in self.levels:
                 return {'success': False, 'message': f'Parking lot level {level} does not exist'}
