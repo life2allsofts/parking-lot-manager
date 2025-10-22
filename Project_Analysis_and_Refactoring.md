@@ -357,7 +357,7 @@ rename Vehicle.py => ParkingManager/models/Vehicle.py (100%)
 ### Original Architecture (Before Refactoring)
 
 #### Structural UML - God Class Anti-Pattern
-![Original Structural UML](screenshots/phase4_Advanced_Patterns_&_Submission_Excellence/phase4_01_uml_original_structural_god_class.png)
+(screenshots/phase4_Advanced_Patterns_&_Submission_Excellence/phase4_01_uml_original_structural_god_class.png)
 
 **Key Issues Identified:**
 - **God Class**: ParkingManager handles all responsibilities (GUI, business logic, data management)
@@ -366,7 +366,7 @@ rename Vehicle.py => ParkingManager/models/Vehicle.py (100%)
 - **Poor Encapsulation**: Direct manipulation of data structures
 
 #### Behavioral UML - Monolithic Workflow
-![Original Behavioral UML](screenshots/phase4_Advanced_Patterns_&_Submission_Excellence/phase4_02_uml_original_behavioral_monolithic.png)
+(screenshots/phase4_Advanced_Patterns_&_Submission_Excellence/phase4_02_uml_original_behavioral_monolithic.png)
 
 **Workflow Problems:**
 - **Single Responsibility Violation**: ParkingManager does everything
@@ -377,7 +377,7 @@ rename Vehicle.py => ParkingManager/models/Vehicle.py (100%)
 ### Refactored Architecture (After Refactoring)
 
 #### Structural UML - Clean Architecture
-![Refactored Structural UML](screenshots/phase4_Advanced_Patterns_&_Submission_Excellence/phase4_03_uml_refactored_structural_clean_architecture.png)
+(screenshots/phase4_Advanced_Patterns_&_Submission_Excellence/phase4_03_uml_refactored_structural_clean_architecture.png)
 
 **Architectural Improvements:**
 - **Separation of Concerns**: GUI (ParkingLotGUI), Business Logic (ParkingService), Data (Models)
@@ -387,7 +387,7 @@ rename Vehicle.py => ParkingManager/models/Vehicle.py (100%)
 - **Single Responsibility**: Each class has one clear purpose
 
 #### Structural UML - SOLID Principles Implementation
-![Refactored Structural UML - SOLID](screenshots/phase4_Advanced_Patterns_&_Submission_Excellence/phase4_05_uml_refactored_structural_solid_principles.png)
+(screenshots/phase4_Advanced_Patterns_&_Submission_Excellence/phase4_05_uml_refactored_structural_solid_principles.png)
 
 **SOLID Principles Demonstrated:**
 - **Single Responsibility**: Each class has one reason to change
@@ -397,7 +397,7 @@ rename Vehicle.py => ParkingManager/models/Vehicle.py (100%)
 - **Dependency Inversion**: High-level modules don't depend on low-level modules
 
 #### Behavioral UML - Delegated Workflow
-![Refactored Behavioral UML](screenshots/phase4_Advanced_Patterns_&_Submission_Excellence/phase4_04_uml_refactored_behavioral_delegated_workflow.png)
+(screenshots/phase4_Advanced_Patterns_&_Submission_Excellence/phase4_04_uml_refactored_behavioral_delegated_workflow.png)
 
 **Improved Workflow:**
 - **Delegation Pattern**: GUI delegates to service layer
@@ -421,7 +421,7 @@ rename Vehicle.py => ParkingManager/models/Vehicle.py (100%)
 
 #### Strategic Design - Core Domains & Bounded Contexts
 
-![DDD Strategic Design](screenshots/phase4_Advanced_Patterns_&_Submission_Excellence/phase4_06_ddd_strategic_design_bounded_contexts.png)
+(screenshots/phase4_Advanced_Patterns_&_Submission_Excellence/phase4_06_ddd_strategic_design_bounded_contexts.png)
 
 *Diagram generated from Mermaid code showing domain relationships and bounded contexts*
 
@@ -586,7 +586,7 @@ Adapter patterns for integration
 
 ### **Service Decomposition Strategy**
 
-![Microservices Architecture](screenshots/phase4_Advanced_Patterns_&_Submission_Excellence/phase4_07_microservices_service_decomposition.png)
+(screenshots/phase4_Advanced_Patterns_&_Submission_Excellence/phase4_07_microservices_service_decomposition.png)
 
 *Diagram showing microservices decomposition, API gateway routing, and database-per-service pattern*
 
@@ -1146,4 +1146,78 @@ Limited output visibility	Full history via scrollbar	✅ User control
 Missed real-time updates	Auto-scroll to latest	✅ Real-time feedback
 
 ### 4.6 Final Submission Package
-[TO BE ADDED - .zip preparation, file organization]
+📦 4.6 Final Submission Package
+Submission Structure & Contents
+The final submission is organized as a comprehensive .zip file containing all required components for evaluation:
+
+text
+parking-management-system-final-submission.zip/
+├── 📁 Source_Code/                           # Working application implementation
+│   ├── main.py                              # Application entry point
+│   ├── ParkingLot.py                        # GUI layer
+│   ├── ParkingService.py                    # Business logic layer
+│   ├── config.py                            # Configuration management
+│   └── 📁 models/                           # Vehicle class hierarchy
+│       ├── Vehicle.py
+│       └── ElectricVehicle.py
+├── 📁 UML_Diagrams/                         # 7 required diagrams
+│   ├── 01_original_structural_god_class.png
+│   ├── 02_original_behavioral_monolithic.png
+│   ├── 03_refactored_structural_clean_architecture.png
+│   ├── 04_refactored_behavioral_delegated_workflow.png
+│   ├── 05_ddd_strategic_design_bounded_contexts.png
+│   ├── 06_enhanced_ev_charging_domain_model.png
+│   └── 07_microservices_architecture_diagram.png
+├── 📁 Development_Screenshots/              # Development process evidence
+│   ├── phase1_Baseline_Analysis/
+│   ├── phase2_Critical_Bug_Fixes/
+│   ├── phase3_Business_Logic_Separation/
+│   └── phase4_Advanced_Patterns/
+├── 📁 Application_Demonstration/            # Application functionality evidence
+│   ├── 01_application_startup.png
+│   ├── 02_parking_lot_creation.png
+│   ├── 03_vehicle_parking_regular.png
+│   ├── ... (11 total screenshots)
+│   └── 11_full_workflow_complete.png
+├── 📄 Project_Documentation_DDD_and_Architecture.pdf
+├── 📄 Project_Analysis_and_Refactoring.md
+└── 📄 Quick_Start_Instructions.txt
+Submission Requirements Met
+Requirement	Status	Evidence Location
+Two UML diagrams (original)	✅ Included	UML_Diagrams/01-02
+Two UML diagrams (refactored)	✅ Included	UML_Diagrams/03-04
+Updated source code	✅ Included	Source_Code/ folder
+Application screenshots	✅ Included	Application_Demonstration/ (11 screenshots)
+DDD written document	✅ Included	Project_Documentation_DDD_and_Architecture.pdf
+Bounded context diagram	✅ Included	UML_Diagrams/05
+Domain models	✅ Included	PDF Section 2 + UML_Diagrams/06
+Microservices architecture	✅ Included	PDF Section 3 + UML_Diagrams/07
+Technical Implementation Notes
+Application Characteristics:
+
+Implemented using standard Python libraries
+
+Includes user interface improvements (scrollable console, window management)
+
+Supports multiple vehicle types (cars, motorcycles, electric vehicles)
+
+Implements error handling and user feedback systems
+
+Architectural Approach:
+
+Layered architecture separating GUI, business logic, and data layers
+
+Domain-Driven Design analysis with bounded contexts
+
+Microservices-ready decomposition strategy
+
+EV Charging Station Management extension
+
+Verification Instructions
+Extract the ZIP file
+
+Refer to Quick_Start_Instructions.txt for application setup
+
+Execute python main.py in the Source_Code/ folder to run the application
+
+Review diagrams and documentation in their respective folders

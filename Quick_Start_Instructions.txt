@@ -1,0 +1,43 @@
+PARKING MANAGEMENT SYSTEM - FINAL SUBMISSION
+============================================
+
+QUICK START INSTRUCTIONS:
+1. Open the 'Source_Code' folder
+2. Double-click 'main.py' to run the application
+3. The application will open with the Parking Lot Manager interface
+   (See Application_Demonstration/01_application_startup.png for expected view)
+
+WHAT'S INCLUDED:
+- 'Source_Code/' - Complete working application (run main.py)
+- 'UML_Diagrams/' - 7 structural, behavioral, and architecture diagrams
+- 'Application_Demonstration/' - 11 screenshots of working application
+- 'Development_Screenshots/' - Complete refactoring journey (Phases 1-4)
+- 'Project_Documentation_DDD_and_Architecture.pdf' - DDD & architecture analysis
+
+APPLICATION DEMONSTRATION (Application_Demonstration/ folder):
+01 - Application startup and welcome screen
+02 - Parking lot creation with regular/EV slots
+03-06 - Vehicle parking (regular/EV cars & motorcycles)
+07-08 - Status display showing all parked vehicles
+09 - Vehicle removal functionality
+10 - Error handling examples
+11 - Complete workflow demonstration
+
+EXPECTED STARTUP:
+- Application shows "Parking Lot Manager" window
+- Welcome message: "Welcome to Parking Lot Manager!"
+- User prompt: "Start by creating a parking lot..."
+- All input fields and buttons functional
+- Scrollable output console with real-time updates
+
+SYSTEM REQUIREMENTS:
+- Python 3.6 or higher
+- No additional libraries required
+- Uses only standard Python libraries
+
+FOR REVIEWERS:
+- Working application: Source_Code/ (run main.py)
+- Application evidence: Application_Demonstration/ (11 screenshots)
+- Architectural diagrams: UML_Diagrams/ (7 diagrams)  
+- Development journey: Development_Screenshots/ (Phases 1-4)
+- DDD documentation: Project_Documentation_DDD_and_Architecture.pdf
