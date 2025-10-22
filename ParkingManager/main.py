@@ -7,21 +7,33 @@ from ParkingLot import ParkingLot
 from config import initialize_tk_widgets, get_tk_variables
 
 def main():
+    # =========================================================================
+    # ROOT WINDOW INITIALIZATION
+    # =========================================================================
+    
     # Initialize tkinter root window
     root = tk.Tk()
-    root.geometry("750x900")
-    root.resizable(0,0)
     root.title("Parking Lot Manager")
     
-    # Initialize Tkinter widgets that need the root window FIRST
-    initialize_tk_widgets(root)
+    # Set a reasonable window size that fits most screens
+    window_width = 750
+    window_height = 800  # Reduced height to fit standard screens
     
-    # Get the initialized Tkinter variables
-    tk_vars = get_tk_variables()
+    # Get screen dimensions
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
     
-    # Initialize parking lot instance with Tkinter variables
-    parkinglot = ParkingLot(tk_vars)
+    # Calculate position to center the window
+    x_position = (screen_width - window_width) // 2
+    y_position = (screen_height - window_height) // 4  # Position higher to avoid taskbar
     
+    # Set window geometry and make it resizable
+    root.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
+    root.resizable(True, True)  # Enable both horizontal and vertical resizing
+    
+    # Set minimum window size to prevent it from becoming too small
+    root.minsize(700, 600)
+
     # =========================================================================
     # GUI LAYOUT - Building the user interface
     # =========================================================================
@@ -30,7 +42,50 @@ def main():
     label_head = tk.Label(root, text='Parking Lot Manager', font='Arial 16 bold', bg='lightblue', fg='darkblue')
     label_head.grid(row=0, column=0, padx=10, pady=10, columnspan=4, sticky='ew')
 
-    # Lot Creation Section
+    # =========================================================================
+    # OUTPUT CONSOLE SECTION WITH SCROLLBAR (CREATED FIRST)
+    # =========================================================================
+    
+    # Create the console frame and text widget FIRST before initializing tk widgets
+    console_frame = tk.Frame(root, relief='sunken', bd=1)
+    console_frame.grid(column=0, row=18, padx=10, pady=10, columnspan=4, sticky='nsew')
+
+    # Create scrollbar for the text widget
+    scrollbar = tk.Scrollbar(console_frame)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    # Create text widget with scrollbar functionality
+    tfield = tk.Text(console_frame, 
+                    height=12,  # Reduced height to fit better
+                    width=80, 
+                    yscrollcommand=scrollbar.set,
+                    font='Arial 10', 
+                    wrap=tk.WORD,
+                    bg='white', 
+                    fg='black',
+                    padx=5,
+                    pady=5)
+    tfield.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+    # Configure scrollbar to work with text widget
+    scrollbar.config(command=tfield.yview)
+
+    # Now initialize Tkinter widgets with the root window
+    initialize_tk_widgets(root)
+    
+    # Get the initialized Tkinter variables
+    tk_vars = get_tk_variables()
+    
+    # IMPORTANT: Replace the tfield in tk_vars with our new scrollable one
+    tk_vars['tfield'] = tfield
+    
+    # Initialize parking lot instance with Tkinter variables
+    parkinglot = ParkingLot(tk_vars)
+
+    # =========================================================================
+    # LOT CREATION SECTION
+    # =========================================================================
+    
     label_creation = tk.Label(root, text='🅿️ Lot Creation', font='Arial 12 bold', bg='lightyellow')
     label_creation.grid(row=1, column=0, padx=10, columnspan=4, sticky='ew')
 
@@ -63,7 +118,10 @@ def main():
                               font="Arial 11", bg='lightyellow', fg='black', activebackground="yellow", padx=10, pady=5)
     clearInputsBtn.grid(row=4, column=1, padx=4, pady=4)
 
-    # Car Management Section
+    # =========================================================================
+    # CAR MANAGEMENT SECTION - PARK VEHICLE
+    # =========================================================================
+    
     label_car = tk.Label(root, text='🚗 Park Vehicle', font='Arial 12 bold', bg='lightgreen')
     label_car.grid(row=5, column=0, padx=10, pady=5, columnspan=4, sticky='ew')
 
@@ -100,7 +158,10 @@ def main():
                        font="Arial 11", bg='lightblue', fg='black', activebackground="blue", padx=10, pady=5)
     parkBtn.grid(column=0, row=9, padx=4, pady=4, columnspan=2)
 
-    # Vehicle Removal Section - CLEARLY SEPARATED
+    # =========================================================================
+    # VEHICLE REMOVAL SECTION
+    # =========================================================================
+    
     label_remove = tk.Label(root, text='🚪 Remove Vehicle', font='Arial 12 bold', bg='lightcoral')
     label_remove.grid(row=10, column=0, padx=10, pady=5, columnspan=4, sticky='ew')
 
@@ -121,7 +182,10 @@ def main():
                          font="Arial 11", bg='lightcoral', fg='black', activebackground="red", padx=10, pady=5)
     removeBtn.grid(column=0, row=12, padx=4, pady=4, columnspan=2)
 
-    # Search and Status Section
+    # =========================================================================
+    # SEARCH AND STATUS SECTION
+    # =========================================================================
+    
     label_search = tk.Label(root, text='🔍 Search & Status', font='Arial 12 bold', bg='lightcyan')
     label_search.grid(row=13, column=0, padx=10, pady=5, columnspan=4, sticky='ew')
 
@@ -153,6 +217,10 @@ def main():
                          font="Arial 10", bg='PaleGreen1', fg='black', activebackground="PaleGreen3", padx=5, pady=3)
     statusBtn.grid(column=0, row=16, padx=4, pady=4)
 
+    # =========================================================================
+    # OUTPUT CONSOLE LABELS AND BUTTONS
+    # =========================================================================
+    
     # Output text field with Clear Console button
     tfield_label = tk.Label(root, text='Output Console:', font='Arial 11 bold')
     tfield_label.grid(column=0, row=17, padx=10, pady=(10,0), sticky='w')
@@ -162,18 +230,23 @@ def main():
                                font="Arial 9", bg='lightgray', fg='black', activebackground="gray", padx=5, pady=2)
     clearConsoleBtn.grid(column=1, row=17, padx=5, pady=(10,0), sticky='w')
 
-    # Get the text widget and place it at row 18
-    tfield = tk_vars['tfield']
-    tfield.grid(column=0, row=18, padx=10, pady=10, columnspan=4, sticky='nsew')
+    # =========================================================================
+    # WINDOW CONFIGURATION AND FINAL SETUP
+    # =========================================================================
     
-    # Configure grid weights for proper resizing
-    root.grid_rowconfigure(18, weight=1)
-    root.grid_columnconfigure(0, weight=1)
+    # Configure grid weights for proper resizing - give weight to the console row
+    root.grid_rowconfigure(18, weight=1)  # Console row gets expansion priority
+    for col in range(4):
+        root.grid_columnconfigure(col, weight=1)  # All columns get some expansion
     
-    # Add initial welcome message
+    # Add initial welcome message to the ACTUAL text widget we're using
     tfield.insert(tk.END, "🚗 Welcome to Parking Lot Manager!\n")
     tfield.insert(tk.END, "👉 Start by creating a parking lot with the 'Create Lot' button above.\n\n")
-    tfield.see(tk.END)
+    tfield.see(tk.END)  # Auto-scroll to bottom to show latest messages
+    
+    # Ensure window is brought to front and focused
+    root.lift()
+    root.focus_force()
     
     # Start the GUI event loop
     root.mainloop()
