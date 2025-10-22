@@ -31,7 +31,7 @@ Source_Code/
 
 1. Clone the repository:
 bash
-git clone https://github.com/yourusername/parking-management-system.git
+git clone https://github.com/life2allsofts/parking-lot-manager.git
 
 2. Navigate to the source code:
 bash
